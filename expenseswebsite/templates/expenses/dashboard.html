@@ -63,41 +63,82 @@
             </div>
         </div>
     </div>
-
-    <!-- BAGIAN 2: VISUALISASI DATA (GRAFIK BAWAH) -->
-    <div class="row">
-        <!-- Grafik 1: Pengeluaran per Bulan (Histogram/Bar Chart) -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm border-0 p-3 h-100">
-                <h5 class="font-weight-bold mb-3 text-secondary">
-                    <i class="fas fa-chart-bar mr-2"></i> Grafik Pengeluaran per Bulan
-                </h5>
-                <div class="text-center my-auto">
-                    {% if graphic1 %}
-                        <img src="data:image/png;base64,{{ graphic1 }}" alt="Grafik Pengeluaran Bulan" class="img-fluid rounded">
-                    {% else %}
-                        <p class="text-muted">Belum ada data untuk ditampilkan.</p>
-                    {% endif %}
-                </div>
+    <!-- BAGIAN GRAFIK BERDAMPINGAN -->
+<div class="row">
+    <!-- Bar Chart (Pengeluaran per Bulan) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Pengeluaran Berdasarkan Bulan</h6>
             </div>
-        </div>
-
-        <!-- Grafik 2: Pengeluaran Berdasarkan Kategori (Pie Chart) -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm border-0 p-3 h-100">
-                <h5 class="font-weight-bold mb-3 text-secondary">
-                    <i class="fas fa-chart-pie mr-2"></i> Pengeluaran Berdasarkan Kategori
-                </h5>
-                <div class="text-center my-auto">
-                    {% if graphic2 %}
-                        <img src="data:image/png;base64,{{ graphic2 }}" alt="Grafik Kategori" class="img-fluid rounded">
-                    {% else %}
-                        <p class="text-muted">Belum ada data untuk ditampilkan.</p>
-                    {% endif %}
-                </div>
+            <div class="card-body">
+                <!-- Batasi tinggi canvas agar tidak terlalu panjang ke bawah -->
+                <canvas id="monthlyExpenseChart" style="max-height: 280px;"></canvas>
             </div>
         </div>
     </div>
 
+    <!-- Pie Chart (Pengeluaran per Kategori) -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Pengeluaran Berdasarkan Kategori</h6>
+            </div>
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <!-- Batasi tinggi canvas pie chart -->
+                <canvas id="categoryExpenseChart" style="max-height: 280px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sertakan CDN Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // 1. Inisialisasi Bar Chart Bulanan
+    const monthsData = JSON.parse('{{ chart_months|safe }}');
+    const expAmountsData = JSON.parse('{{ chart_exp_amounts|safe }}');
+
+    const ctxBar = document.getElementById('monthlyExpenseChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: monthsData,
+            datasets: [{
+                label: 'Jumlah (Rp)',
+                data: expAmountsData,
+                backgroundColor: '#3b82f6',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // 2. Inisialisasi Pie Chart Kategori
+    const catData = JSON.parse('{{ chart_categories|safe }}');
+    const catAmountsData = JSON.parse('{{ chart_cat_amounts|safe }}');
+
+    const ctxPie = document.getElementById('categoryExpenseChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: catData,
+            datasets: [{
+                data: catAmountsData,
+                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
 </div>
 {% endblock %}

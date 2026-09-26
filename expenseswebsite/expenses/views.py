@@ -3,12 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Category, Expense, UserIncome, IncomeSource
 from django.contrib import messages
 from django.core.paginator import Paginator
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt 
-import matplotlib.ticker as ticker
-import io
-import base64
+import json
 from django.db.models import Sum, Count 
 
 @login_required(login_url='authentication/login')
@@ -116,7 +111,6 @@ def dashboard_view(request):
     # ==========================================
     # MEMBUAT GRAFIK 1: Pengeluaran per Bulan (Bar Chart)
     # ========================================== 
-    fig1, ax1 = plt.subplots(figsize=(6, 4))
     
     # 1. Siapkan data dasar untuk 12 bulan (Nilai awal 0)
     all_months = {
@@ -134,69 +128,28 @@ def dashboard_view(request):
     for item in expenses_by_month:
         month_num = item['date__month']
         if month_num in monthly_totals:
-            monthly_totals[month_num] = item['total']
+            monthly_totals[month_num] = float(item['total'])
             
     # 3. Pisahkan ke dalam list untuk sumbu X (bulan) dan sumbu Y (jumlah uang)
     months = list(all_months.values())
     exp_amounts = list(monthly_totals.values())
-    
-    # 4. Buat Grafik Batang
-    ax1.bar(months, exp_amounts, color='#3b82f6')
-    ax1.set_title('Pengeluaran Berdasarkan Bulan', fontsize=12, fontweight='bold')
-    ax1.set_xlabel('Bulan', fontsize=10)
-    ax1.set_ylabel('Jumlah (Rp)', fontsize=10)
-
-    def format_juta(x, pos):
-        if (x >= 1e6):
-            return f'{int(x*1e-6)} Juta'
-        elif x == 0:
-            return '0'
-        else:
-            return f'{int(x)}'
-
-    ax1.yaxis.set_major_formatter(ticker.FuncFormatter(format_juta))
-    
-    # Memutar label bulan agar muat dan rapi jika dilihat
-    plt.xticks(rotation=0, fontsize=9)
-    
-    plt.tight_layout()
-    
-    buffer1 = io.BytesIO()
-    plt.savefig(buffer1, format='png')
-    buffer1.seek(0)
-    graphic1 = base64.b64encode(buffer1.getvalue()).decode('utf-8')
-    plt.close(fig1)
     # ==========================================
     # MEMBUAT GRAFIK 2: Pengeluaran per Kategori (Pie Chart)
     # ==========================================
-    fig2, ax2 = plt.subplots(figsize=(6, 4))
     
     expenses_by_cat = Expense.objects.filter(owner=user).values('category').annotate(total=Sum('amount'))
     
     categories = [item['category'] if item['category'] else 'Lainnya' for item in expenses_by_cat]
-    cat_amounts = [item['total'] for item in expenses_by_cat]
-    
-    if categories and cat_amounts:
-        ax2.pie(cat_amounts, labels=categories, autopct='%1.1f%%', startangle=90, colors=['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'])
-        ax2.set_title('Pengeluaran Berdasarkan Kategori', fontsize=12, fontweight='bold')
-    else:
-        ax2.text(0.5, 0.5, 'Belum Ada Data Kategori', ha='center', va='center', transform=ax2.transAxes)
-        
-    plt.tight_layout()
-    
-    buffer2 = io.BytesIO()
-    plt.savefig(buffer2, format='png')
-    buffer2.seek(0)
-    graphic2 = base64.b64encode(buffer2.getvalue()).decode('utf-8')
-    plt.close(fig2)
-
+    cat_amounts = [float(item['total']) for item in expenses_by_cat]
     context = {
         'total_pemasukan': total_pemasukan,
         'total_pengeluaran': total_pengeluaran,
         'sisa_uang': sisa_uang,
         'jumlah_anggota': jumlah_anggota,
-        'graphic1': graphic1,
-        'graphic2': graphic2,
+        'chart_months': json.dumps(months),
+        'chart_exp_amounts': json.dumps(exp_amounts),
+        'chart_categories': json.dumps(categories),
+        'chart_cat_amounts': json.dumps(cat_amounts),
     }
     return render(request, 'expenses/dashboard.html', context)
 
