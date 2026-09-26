@@ -1,0 +1,134 @@
+/* Terapkan secara paksa ke seluruh teks di halaman login/register */
+html,
+body,
+p,
+span,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+textarea,
+.alert {
+  font-family: 'Poppins', sans-serif !important;;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: 48px;
+    height: calc(100vh - 48px);
+  }
+}
+
+/* Style Teks Menu */
+.sidebar .nav-link {
+  font-size: .875rem;
+  font-weight: 400;
+  color: #333333;
+  padding: .5rem 1rem;
+}
+
+/* Hover Menu */
+.sidebar .nav-link:hover {
+  color: #0d6efd;
+}
+
+/* Menu Aktif (Warna Biru) */
+.sidebar .nav-link.active {
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+/* Judul SUMMARY (Abu-abu Pudar) */
+.sidebar-heading {
+  font-size: .75rem;
+  font-weight: 600;
+  color: #a0a0a0;
+  letter-spacing: .05rem;
+}
+
+/* Fix Theme Dropdown agar tidak memperbesar navbar */
+.theme-dropdown {
+  position: relative !important;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+  margin-top: 0.5rem !important;
+
+  min-width: 10rem;
+  padding: 0.5rem 0;
+
+  background-color: #212529;
+  border: 1px solid #373b3e;
+  z-index: 1050 !important;
+}
+
+/* Animasi Theme Toggle Switch */
+#themeToggleCheckbox:checked + .slider .switch-knob {
+  transform: translateX(26px);
+}
+
+#themeToggleCheckbox:checked + .slider {
+  background-color: #212529 !important;
+  border-color: #0d6efd !important;
+}
+
+/* Menyesuaikan warna teks link sidebar di Dark Mode */
+[data-bs-theme="dark"] .sidebar .nav-link {
+  color: #adb5bd !important; /* Abu-abu terang agar tidak terlalu silau tapi tetap jelas */
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Warna teks dan latar belakang saat menu aktif atau di-hover pada Dark Mode */
+[data-bs-theme="dark"] .sidebar .nav-link:hover,
+[data-bs-theme="dark"] .sidebar .nav-link.active {
+  color: #ffffff !important; /* Putih bersih */
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Mengubah background kartu breadcrumb saat Dark Mode */
+[data-bs-theme="dark"] .card {
+  background-color: #2b3035 !important; /* Warna kontras yang pas untuk card di mode gelap */
+  border: 1px solid #495057 !important;
+}
+
+/* Menyesuaikan warna teks link dan item aktif di dalam breadcrumb */
+[data-bs-theme="dark"] .breadcrumb-item a {
+  color: #adb5bd !important;
+}
+
+[data-bs-theme="dark"] .breadcrumb-item.active {
+  color: #f8f9fa !important;
+}
+
+/* Memaksa background dan teks mengikuti tema secara mutlak */
+[data-bs-theme="light"] body {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+}
+
+[data-bs-theme="dark"] body {
+  background-color: #212529 !important;
+  color: #f8f9fa !important;
+}
+
+/* Transisi halus saat ganti tema */
+html, body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Memaksa body mengikuti variabel warna bawaan Bootstrap */
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}

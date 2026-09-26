@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+  
+  <div class="row mt-3">
+    <div class="col-md-12">
+      
+      <!-- Pesan / Alerts -->
+      <div class="row">
+        <div class="col-md-12">
+          {% include 'partials/_massages.html' %}
+        </div>
+      </div>
+
+      <!-- Wadah Breadcrumb dan Tombol Add Expenses -->
+      <div class="card border-0 px-3 py-2 mb-3" style="background-color: #EAECF0;">
+        <div class="d-flex justify-content-between align-items-center">
+          
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="">Keuangan</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Pengeluaran Arisan</li>
+            </ol>
+          </nav>
+
+          <a href="{% url 'add_expense' %}" class="btn btn-primary btn-sm" style="background-color : #0f172a">Tambahkan</a>
+          
+        </div>
+      </div>
+
+      <div class="container">
+        {% if expenses.count %}
+
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+            {% for expense in page_obj %}
+              <tr>
+                <td>{{ expense.amount|floatformat:0|intcomma }}</td>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.date }}</td>
+                <td><a href="{% url 'expense-edit' expense.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            
+            <!-- Teks Informasi Hasil Data -->
+            <div class="text-muted small">
+              Showing {{ page_obj.start_index }} - {{ page_obj.end_index }} of {{ page_obj.paginator.count }} results
+            </div>
+
+            <!-- Navigasi Angka & Tombol -->
+            <nav aria-label="Page navigation">
+              <ul class="pagination pagination-sm mb-0 align-items-center">
+                
+                <!-- Tombol Previous (<) -->
+                {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link rounded-circle d-flex align-items-center justify-content-center text-secondary border-0" style="width: 32px; height: 32px;" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                      <i class="bi bi-chevron-left"></i>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link rounded-circle d-flex align-items-center justify-content-center text-muted border-0 bg-transparent" style="width: 32px; height: 32px;">
+                      <i class="bi bi-chevron-left"></i>
+                    </span>
+                  </li>
+                {% endif %}
+
+                <!-- Looping Nomor Halaman (Simulasi Pintar untuk Halaman Banyak) -->
+                {% for i in page_obj.paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <!-- Halaman Aktif (Bentuk Bulat / Pill Primary) -->
+                    <li class="page-item active" aria-current="page">
+                      <span class="page-link rounded-circle bg-primary border-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px; margin: 0 2px;">{{ i }}</span>
+                    </li>
+                  {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                    <!-- Halaman di sekitar halaman aktif -->
+                    <li class="page-item">
+                      <a class="page-link rounded-circle text-dark d-flex align-items-center justify-content-center border-0 bg-transparent" style="width: 32px; height: 32px; margin: 0 2px;" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                <!-- Tombol Next (>) -->
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link rounded-circle d-flex align-items-center justify-content-center text-secondary border-0" style="width: 32px; height: 32px;" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                      <i class="bi bi-chevron-right"></i>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link rounded-circle d-flex align-items-center justify-content-center text-muted border-0 bg-transparent" style="width: 32px; height: 32px;">
+                      <i class="bi bi-chevron-right"></i>
+                    </span>
+                  </li>
+                {% endif %}
+
+              </ul>
+            </nav>
+
+          </div>
+
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock content %}

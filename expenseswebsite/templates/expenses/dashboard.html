@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 font-weight-bold">Dashboard</h2>
+     <!-- Pesan / Alerts -->
+      <div class="row">
+        <div class="col-md-12">
+          {% include 'partials/_massages.html' %}
+        </div>
+      </div>
+    
+    <!-- BAGIAN 1: CARDS STATISTIK ATAS -->
+    <div class="row mb-4">
+        <!-- Card Pemasukan -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase font-weight-bold">Total Pemasukan</h6>
+                    <!-- Tambahkan style di sini -->
+                    <h3 class="font-weight-bold mt-2" style="font-size: 1.35rem; white-space: nowrap;">Rp {{ total_pemasukan|floatformat:0|intcomma }}</h3>
+                    <p class="card-text mb-0 small"><i class="fas fa-arrow-up"></i> Akumulasi kas masuk</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Pengeluaran -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase font-weight-bold">Total Pengeluaran</h6>
+                    <!-- Tambahkan style di sini -->
+                    <h3 class="font-weight-bold mt-2" style="font-size: 1.35rem; white-space: nowrap;">Rp {{ total_pengeluaran|floatformat:0|intcomma }}</h3>
+                    <p class="card-text mb-0 small">Pengeluaran keseluruhan</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Sisa Uang -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #10b981, #047857);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase font-weight-bold">Sisa Uang (Kas)</h6>
+                    <!-- Tambahkan style di sini -->
+                    <h3 class="font-weight-bold mt-2 {% if sisa_uang < 0 %}text-danger{% endif %}" style="font-size: 1.35rem; white-space: nowrap;">
+                      Rp {{ sisa_uang|floatformat:0|intcomma }}
+                    </h3>
+                    <p class="card-text mb-0 small">Saldo akhir saat ini</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Jumlah Anggota Arisan -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase font-weight-bold">Jumlah Anggota</h6>
+                    <!-- Tambahkan style di sini -->
+                    <h3 class="font-weight-bold mt-2" style="font-size: 1.35rem; white-space: nowrap;">{{ jumlah_anggota }} Orang</h3>
+                    <p class="card-text mb-0 small">Yang ikut arisan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BAGIAN 2: VISUALISASI DATA (GRAFIK BAWAH) -->
+    <div class="row">
+        <!-- Grafik 1: Pengeluaran per Bulan (Histogram/Bar Chart) -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 p-3 h-100">
+                <h5 class="font-weight-bold mb-3 text-secondary">
+                    <i class="fas fa-chart-bar mr-2"></i> Grafik Pengeluaran per Bulan
+                </h5>
+                <div class="text-center my-auto">
+                    {% if graphic1 %}
+                        <img src="data:image/png;base64,{{ graphic1 }}" alt="Grafik Pengeluaran Bulan" class="img-fluid rounded">
+                    {% else %}
+                        <p class="text-muted">Belum ada data untuk ditampilkan.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafik 2: Pengeluaran Berdasarkan Kategori (Pie Chart) -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 p-3 h-100">
+                <h5 class="font-weight-bold mb-3 text-secondary">
+                    <i class="fas fa-chart-pie mr-2"></i> Pengeluaran Berdasarkan Kategori
+                </h5>
+                <div class="text-center my-auto">
+                    {% if graphic2 %}
+                        <img src="data:image/png;base64,{{ graphic2 }}" alt="Grafik Kategori" class="img-fluid rounded">
+                    {% else %}
+                        <p class="text-muted">Belum ada data untuk ditampilkan.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

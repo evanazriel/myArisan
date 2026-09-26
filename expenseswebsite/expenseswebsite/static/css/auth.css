@@ -1,0 +1,124 @@
+/* Styling Khusus Halaman Auth (Minimalis Light Theme) */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body.auth-body {
+  background-color: #ffffff !important;
+  color: #0f172a;
+  font-family: 'Poppins', sans-serif !important;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* Center Vertikal */
+  justify-content: center;
+  /* Center Horizontal */
+  margin: 0;
+}
+
+.auth-subtitle {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200px;
+  font-style: normal;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card dengan latar putih & border abu-abu halus */
+.auth-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Override utility class bootstrap pada judul di template */
+.auth-card h3.text-white {
+  color: #0f172a !important;
+  font-size: 1.5rem;
+}
+
+/* Input Form dengan latar terang & border tipis */
+.form-control-minimal {
+  background-color: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-control-minimal:focus {
+  background-color: #ffffff !important;
+  border-color: #2563eb !important;
+  color: #0f172a !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15) !important;
+  outline: none;
+}
+
+.form-control-minimal::placeholder {
+  color: #94a3b8;
+}
+
+/* Tombol Hitam Minimalis (Gelap dengan teks putih) */
+.btn-minimal {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-minimal:hover {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+/* Link Toggle Show & Register/Login */
+.show-toggle {
+  color: #475569;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.show-toggle:hover {
+  color: #0f172a;
+}
+
+/* Hilangkan ikon bawaan Bootstrap & jaga warna border/focus */
+.form-control-minimal.is-valid,
+.form-control-minimal.is-invalid,
+.form-control.is-valid,
+.form-control.is-invalid {
+  background-image: none !important;
+  padding-right: 0.75rem !important;
+}
+
+/* Biarkan warna border dari class Bootstrap (Hijau/Merah) tetap bekerja */
+.form-control-minimal.is-valid {
+  border-color: #198754 !important;
+}
+
+.form-control-minimal.is-invalid {
+  border-color: #dc3545 !important;
+}

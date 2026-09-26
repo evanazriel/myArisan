@@ -1,0 +1,41 @@
+{% load static %}
+
+<div class="sidebar border-end col-md-3 col-lg-2 p-0 bg-body-tertiary">
+  <div class="pt-3">
+    <ul class="nav flex-column">
+      
+      <!-- Menu Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" aria-current="page" href="{% url 'dashboard' %}">
+          <i class="bi bi-bar-chart-fill"></i>
+          Dashboard
+        </a>
+      </li>
+
+      <!-- Menu Pemasukan -->
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'pemasukan' %}active{% endif %}" href="{% url 'pemasukan' %}">
+          <i class="bi bi-bag-plus-fill"></i>
+          Pemasukan
+        </a>
+      </li>
+
+      <!-- Menu Pengeluaran (Tag </li> sudah ditutup dengan benar di sini) -->
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'expenses' %}active{% endif %}" href="{% url 'expenses' %}">
+          <i class="bi bi-bag-dash-fill"></i>
+          Pengeluaran
+        </a>
+      </li>
+
+      <!-- Menu Spinwheel -->
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'spinwheel' %}active{% endif %}" href="{% url 'spinwheel' %}">
+          <i class="bi bi-trophy-fill"></i>
+          Kocokan Arisan
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="container mt-4">
+    
+    <!-- Kotak Breadcrumb dengan background abu-abu terang -->
+    <div class="card border-0 px-3 py-2 mb-3" style="background-color: #EAECF0;">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'pemasukan' %}">Pemasukan</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Pemasukan</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Kotak Card Utama untuk Form -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <!-- Diubah ke URL pemasukan-edit dengan income.id -->
+            <form action="{% url 'pemasukan-edit' income.id %}" method="post">
+                {% include 'partials/_massages.html' %} {% csrf_token %}
+                
+                <div class="form-group mb-3">
+                    <label for="">Amount</label>
+                    <input type="number" class="form-control" name="amount" value="{{ values.amount|floatformat:'0'}}">
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="">Description</label>
+                    <input type="text" class="form-control" name="description" value="{{ values.description }}">
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="">Name</label>
+                    <select class="form-control" name="name">
+                        {% for source in income_sources %}
+                            <option value="{{ source.id }}" {% if values.name_id == source.id %}selected{% endif %}>
+                                {{ source.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="">Date of income</label>
+                    <input type="date" class="form-control" name="date" value="{{ values.date|date:'Y-m-d' }}">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm px-4" style="background-color : #0f172a;">Submit</button>
+                
+                <!-- Diubah ke URL pemasukan-delete dengan income.id -->
+                <a href="{% url 'pemasukan-delete' income.id %}" class="btn btn-danger btn-sm px-4">Delete</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

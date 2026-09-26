@@ -1,0 +1,39 @@
+{% load string_filters %}
+
+{% if messages %}
+  <div class="custom-alerts-container">
+    {% for message in messages %}
+      
+      <!-- Ganti kelas bg-success dengan kondisi dinamis, dan hapus style color paksa -->
+      <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} 
+                  {% if message.tags == 'error' %}bg-danger{% else %}bg-success{% endif %} bg-opacity-10 border-0 py-2 px-3 mb-2 small" 
+           style="color: {% if message.tags == 'error' %}#842029{% else %}#76C457{% endif %} !important;" 
+           role="alert">
+        
+        <!-- Kotak Ikon di Kiri -->
+        <div class="alert-icon-box">
+          {% if message.tags == 'success' %}
+            <i class="bi bi-check-lg"></i>
+          {% elif message.tags == 'warning' %}
+            <i class="bi bi-exclamation-lg"></i>
+          {% else %}
+            <i class="bi bi-exclamation-lg"></i>
+          {% endif %}
+        </div>
+
+        <!-- Area Teks -->
+        <div class="alert-content-area">
+          {% if "|" in message.message %}
+            {% with message_parts=message.message|split:"|" %}
+              <strong>{{ message_parts.0 }}</strong> <span>{{ message_parts.1 }}</span>
+            {% endwith %}
+          {% else %}
+            <span>{{ message }}</span>
+          {% endif %}
+        </div>
+
+      </div>
+
+    {% endfor %}
+  </div>
+{% endif %}

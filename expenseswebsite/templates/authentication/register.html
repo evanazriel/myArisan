@@ -1,0 +1,80 @@
+{% extends "base_auth.html" %}
+{% load static %}
+{% load string_filters %}
+{% block content %}
+<div class="auth-card">
+  <!-- Title Minimalis -->
+  <h3 class="fw-bold mb-1 text-white">Create an account</h3>
+  <p class="text-secondary small mb-4 auth-subtitle">Enter your details below to get started</p>
+  {% include 'partials/_massages.html' %}
+  <form action="" method="post">
+    {% csrf_token %}
+    
+<!-- Input Username -->
+<div class="mb-3">
+  <input 
+    type="text" 
+    name="username" 
+    placeholder="Username"
+    class="form-control form-control-minimal" 
+    id="usernamefield"
+  
+  />
+  <!-- Dipindah ke bawah input -->
+  <small 
+    class="d-block mt-1" 
+    id="usernameErrorOutput" 
+    style="display: none; font-size: 11px;"
+  ></small>
+</div>
+
+<!-- Input Email -->
+<div class="mb-3">
+  <input 
+    type="email" 
+    name="email" 
+    class="form-control form-control-minimal" 
+    placeholder="Email address"
+    id="EmailField"
+    
+  />
+  <!-- Dipindah ke bawah input -->
+  <small 
+    class="d-block mt-1" 
+    id="emailErrorOutput" 
+    style="display: none; font-size: 11px;"
+  ></small>
+</div>
+
+    <!-- Input Password & Show -->
+    <div class="mb-3">
+      <div class="position-relative">
+        <input 
+          type="password" 
+          name="password" 
+          class="form-control form-control-minimal mb-2" 
+          placeholder="Password"
+          id="PasswordField"
+        />
+        <span class="position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" id="showPasswordToggle" style="cursor: pointer; user-select: none;">
+          <i class="bi bi-eye" id="toggleIcon"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- Button Register -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-minimal">Register</button>
+    </div>
+
+    <!-- Link ke Login -->
+    <div class="mt-4 text-center">
+      <span class="text-secondary small">Already have an account? </span>
+      <a href="{% url 'login' %}" class="show-toggle fw-semibold">Login</a>
+    </div>
+
+  </form>
+</div>
+
+<script src="{% static 'js/register.js' %}" defer></script>
+{% endblock %}

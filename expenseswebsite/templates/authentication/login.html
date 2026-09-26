@@ -1,0 +1,66 @@
+{% extends "base_auth.html" %}
+{% load static %}
+{% load string_filters %}
+
+{% block content %}
+<div class="auth-card">
+  
+  <!-- Title Minimalis Khusus Login -->
+  <h3 class="fw-bold mb-1 text-white">Welcome To myArisan</h3>
+  <p class="text-secondary small mb-4 auth-subtitle">Please Log in to your account</p>
+  
+  <!-- Pesan Alert -->
+  {% include 'partials/_massages.html' %}
+
+  <form action="" method="post">
+    {% csrf_token %}
+    
+    <!-- Input Username -->
+    <div class="mb-3">
+      <input 
+        type="text" 
+        name="username" 
+        placeholder="Username"
+        class="form-control form-control-minimal" 
+        id="Username"
+      />
+    </div>
+
+    <!-- Input Password dengan Ikon Mata di Dalam -->
+    <div class="mb-3">
+      <div class="position-relative">
+        <input 
+          type="password" 
+          name="password" 
+          class="form-control form-control-minimal pe-5" 
+          placeholder="Password"
+          id="PasswordField"
+        />
+        <!-- Ikon Mata -->
+        <span class="position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" id="showPasswordToggle" style="cursor: pointer; user-select: none;">
+          <i class="bi bi-eye" id="toggleIcon"></i>
+        </span>
+      </div>
+
+      <!-- Forgot Password di Kanan Bawah -->
+      <div class="text-end mt-1">
+        <a href="{% url 'reset-password' %}" class="small text-secondary text-decoration-none">Forgot password?</a>
+      </div>
+    </div>
+
+    <!-- Button Login -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-minimal w-100">Login</button>
+    </div>
+
+    <!-- Link Pindah ke Halaman Register -->
+    <div class="mt-4 text-center">
+      <span class="text-secondary small">Don't have an account? </span>
+      <a href="{% url 'register' %}" class="show-toggle fw-semibold">Register</a>
+    </div>
+
+  </form>
+</div>
+
+<script src="{% static 'js/login.js' %}" defer></script>
+{% endblock %}
