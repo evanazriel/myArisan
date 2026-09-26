@@ -1,0 +1,8 @@
+# Environment variables
+.env
+
+# (Opsional) Jika Anda menggunakan virtual environment lokal folder .venv atau env
+.venv/
+env/
+__pycache__/
+db.sqlite3
